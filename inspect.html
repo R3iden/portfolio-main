@@ -3,64 +3,157 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inspect</title>
+  <title>Code Inspector - Rhon Cyril</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 20px;
-      background: #f4f7fa;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
     }
 
     header {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: bold;
-      margin-bottom: 20px;
-      color: #4a90e2;
-      text-transform: middle;
+      margin-bottom: 30px;
+      color: #60a5fa;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+    }
+
+    .description {
+      text-align: center;
+      color: #b8b8b8;
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+    }
+
+    .console-output {
+      background: linear-gradient(135deg, #1a1f3a 0%, #0d1b2a 100%);
+      border: 2px solid #1e3a5f;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 800px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .console-output h3 {
+      color: #60a5fa;
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .console-output pre {
+      background: #0d1b2a;
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+      padding: 15px;
+      overflow-x: auto;
+      color: #10b981;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
 
     table {
       border-collapse: collapse;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      background: white;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(135deg, #1a1f3a 0%, #0d1b2a 100%);
+      border: 2px solid #1e3a5f;
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 0 auto;
     }
 
     th, td {
-      border: 1px solid #ddd;
-      padding: 8px 12px;
+      border: 1px solid #1e3a5f;
+      padding: 12px 16px;
       text-align: center;
     }
 
     th {
-      background-color: #4a90e2;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
       color: white;
       font-weight: bold;
       position: sticky;
       top: 0;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
     }
 
     tr:nth-child(even) {
-      background-color: #f9f9f9;
+      background-color: rgba(59, 130, 246, 0.05);
     }
 
     tr:hover {
-      background-color: #e6f2ff;
+      background-color: rgba(59, 130, 246, 0.15);
+      transition: background-color 0.2s;
+    }
+
+    td {
+      color: #e0e0e0;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin: 30px auto;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      text-align: center;
+    }
+
+    .back-link:hover {
+      background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
-  <header>Use Inspect</header>
+  <div class="container">
+    <header>Code Inspector</header>
+    <p class="description">Open browser console (F12) to see JavaScript outputs</p>
+    
+    <div class="console-output">
+      <h3>📊 Multiplication Table</h3>
+      <pre id="mult-output"></pre>
+    </div>
+
+    <div class="console-output">
+      <h3>🔢 Array Creation (1-10)</h3>
+      <pre id="array-output"></pre>
+    </div>
+
+    <div class="console-output">
+      <h3>🔄 Fibonacci Sequence</h3>
+      <pre id="fib-output"></pre>
+    </div>
+
+    <a href="index.html" class="back-link">← Back to Portfolio</a>
+  </div>
+
   <table id="table"></table>
 
     <!-- //let// -->
     <script>
         let arr = [];
         let max = 10;
+        let multOutput = '';
+        
         for (let x = 1; x <= max; x++){
             let row = []
             for (let y = 1; y <= max; y++){
@@ -68,12 +161,14 @@
             }
             arr.push(row)
         }
+        
         for (let i = 1; i <= max; i++){
             const row = arr[i - 1]
             console.log(row.join("\t"))
+            multOutput += row.join("\t") + "\n";
         }
-    
-    
+        
+        document.getElementById('mult-output').textContent = multOutput;
     </script>
     
     <!-- //function// -->
@@ -83,31 +178,35 @@
             let a = [];
             for (let i = 1; i <= n; i++){
                 a.push(i);
-                if (i %2 == 0){
-            console.log(i)
-        }
+                if (i % 2 == 0){
+                    console.log(i)
+                }
             }
             return a;
         }
         let n = 10;
         let a = create(n);
-        console.log(a);   
+        console.log(a);
+        document.getElementById('array-output').textContent = 'Array: ' + a.join(', ') + '\nEven numbers: ' + a.filter(x => x % 2 === 0).join(', ');
     </script>
 
     <!-- fibonacci 1 -->
     <script>
         const num = 20;
         let n1 = 0, n2 = 1, nextTerm;
+        let fibOutput = '';
 
-        console.log('Fiboncci: ');
+        console.log('Fibonacci: ');
 
         for (let i = 1; i <= num; i++){
             console.log(n1);
+            fibOutput += n1 + (i < num ? ', ' : '');
             nextTerm = n1 + n2;
             n1 = n2;
             n2 = nextTerm;
-
         }
+        
+        document.getElementById('fib-output').textContent = 'First 20 Fibonacci numbers:\n' + fibOutput;
     </script>
 
     <!-- //fibonacci 2//-->
@@ -120,29 +219,6 @@
             console.log(fib[i]);
         }
     </script>
-
-    <!-- //pyramid// -->
-    <!-- <script>
-        let arr = []
-        let size = 10
-
-        for (let row = size; row >= 0; row--){
-            let add = []
-            for (let col = 0; col <= size; col++){
-                if (col < row){
-                    add.push(" ")
-                } else{
-                    add.push(" *")
-                }
-            }
-            arr.push(add)
-        }
-
-        console.log(arr)
-        for (i = 0; i <= arr.length; i++){
-            console.log(arr[i].join(""));
-        }
-    </script> -->
 
 </body>
 </html>
