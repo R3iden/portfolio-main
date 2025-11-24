@@ -5,53 +5,194 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Portfolio</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    * {
       margin: 0;
-      background: #f4f4f9;
-      color: #333;
+      padding: 0;
+      box-sizing: border-box;
     }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+      color: #e0e0e0;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
     header {
       text-align: center;
-      padding: 40px;
-      background: #4CAF50;
-      background-image: url(speace.jpg);
+      padding: 60px 20px 40px;
+      background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
       color: white;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
     }
+    
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    header p {
+      font-size: 1.2em;
+      color: #60a5fa;
+      margin-bottom: 20px;
+    }
+    
     header img {
       width: 150px;
       height: 150px;
       border-radius: 50%;
-      border: 4px solid white;
-      margin-bottom: 15px;
+      border: 5px solid #3b82f6;
+      margin-bottom: 20px;
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+      transition: transform 0.3s ease;
     }
+    
+    header img:hover {
+      transform: scale(1.05);
+    }
+    
     nav {
-      margin-top: 15px;
+      margin-top: 20px;
     }
+    
     nav a {
-      margin: 0 15px;
+      margin: 0 20px;
       color: white;
       text-decoration: none;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
+      padding: 8px 15px;
+      border-radius: 5px;
     }
+    
+    nav a:hover {
+      background: #3b82f6;
+      transform: translateY(-2px);
+    }
+    
     section {
-      padding: 40px;
-      max-width: 800px;
+      padding: 60px 40px;
+      max-width: 1200px;
       margin: auto;
     }
-    .project {
-      background: white;
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    
+    section h2 {
+      font-size: 2.5em;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #60a5fa;
+      text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
     }
+    
+    #about p {
+      text-align: center;
+      font-size: 1.2em;
+      max-width: 800px;
+      margin: 0 auto;
+      color: #b8b8b8;
+    }
+    
+    #projects {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    
+    .project {
+      background: linear-gradient(135deg, #1a1f3a 0%, #0d1b2a 100%);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      border: 2px solid #1e3a5f;
+      transition: all 0.3s ease;
+    }
+    
+    .project:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+      border-color: #3b82f6;
+    }
+    
+    .project h3 {
+      color: #60a5fa;
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+    
+    .project p {
+      color: #b8b8b8;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+    
+    .project a {
+      display: inline-block;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+    
+    .project a:hover {
+      background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    }
+    
+    #contact p {
+      font-size: 1.2em;
+      margin: 15px 0;
+      text-align: center;
+      color: #b8b8b8;
+    }
+    
+    #contact a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    #contact a:hover {
+      color: #3b82f6;
+      text-decoration: underline;
+    }
+    
     footer {
       text-align: center;
-      background: #222;
-      color: white;
-      padding: 15px;
-      margin-top: 30px;
+      background: #0a0e27;
+      color: #808080;
+      padding: 30px;
+      margin-top: 60px;
+      border-top: 2px solid #3b82f6;
+    }
+    
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2em;
+      }
+      
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
+      
+      section {
+        padding: 40px 20px;
+      }
+      
+      section h2 {
+        font-size: 2em;
+      }
     }
   </style>
 </head>
@@ -104,9 +245,8 @@
   <section id="contact">
     <h2>Contact</h2>
     <p>Email: catubigrhom33@gmail.com</p>
-    <p>GitHub: <a href="https://github.com/R3iden/portfolio" target="_blank" rel="noopener">GitHub</a>
-
-    <R3iden></R3iden></a></p>
+    <p>GitHub: <a href="https://github.com/R3iden/portfolio-main" target="_blank" rel="noopener">R3iden</a></p>
+    <p>Portfolio URL: <a href="https://r3iden.github.io/portfolio-main/" target="_blank" rel="noopener">https://r3iden.github.io/portfolio-main/</a></p>
   </section>
 
   <footer>
