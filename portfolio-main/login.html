@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Auth Demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      width: 300px;
+      text-align: center;
+    }
+    h2 { margin-bottom: 15px; }
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background: #3498db;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #2980b9; }
+    .link {
+      margin-top: 10px;
+      color: #3498db;
+      cursor: pointer;
+      text-decoration: underline;
+      display: block;
+    }
+    .message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container" id="auth-container">
+    <!-- Sign In Form -->
+    <div id="signin-section">
+      <h2>Sign In</h2>
+      <label for="signin-username">Username</label>
+      <input id="signin-username" type="text" placeholder="Enter username" required>
+      <label for="signin-password">Password</label>
+      <input id="signin-password" type="password" placeholder="Enter password" required>
+      <button type="button" onclick="signIn()">Log In</button>
+      <span class="link" onclick="showSection('signup-section')">Don't have an account? Sign Up</span>
+      <div class="message" id="signin-message"></div>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="signup-section" class="hidden">
+      <h2>Sign Up</h2>
+      <label for="signup-username">Username</label>
+      <input id="signup-username" type="text" placeholder="Choose username" required>
+      <label for="signup-password">Password</label>
+      <input id="signup-password" type="password" placeholder="Choose password" required>
+      <button type="button" onclick="signUp()">Create Account</button>
+      <span class="link" onclick="showSection('signin-section')">Already have an account? Log In</span>
+      <div class="message" id="signup-message"></div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="hidden">
+      <h2>Welcome, <span id="user-display"></span>!</h2>
+      <button type="button" onclick="logOut()">Log Out</button>
+    </div>
+  </div>
+
+  <script>
+    // Switch visible section
+    function showSection(sectionId) {
+      document.querySelectorAll('#auth-container > div').forEach(div => div.classList.add('hidden'));
+      document.getElementById(sectionId).classList.remove('hidden');
+    }
+
+    // Sign Up: Save user in localStorage
+    function signUp() {
+      const username = document.getElementById('signup-username').value.trim();
+      const password = document.getElementById('signup-password').value.trim();
+      const message = document.getElementById('signup-message');
+
+      if (!username || !password) {
+        message.textContent = 'Please fill all fields.';
+        message.style.color = 'red';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (users[username]) {
+        message.textContent = 'Username already exists.';
+        message.style.color = 'red';
+        return;
+      }
+
+      users[username] = password; // Insecure: plain text for demo only
+      localStorage.setItem('users', JSON.stringify(users));
+      message.textContent = 'Account created! You can log in now.';
+      message.style.color = 'green';
+      document.getElementById('signup-username').value = '';
+      document.getElementById('signup-password').value = '';
+    }
+
+    // Sign In: Verify user
+    function signIn() {
+      const username = document.getElementById('signin-username').value.trim();
+      const password = document.getElementById('signin-password').value.trim();
+      const message = document.getElementById('signin-message');
+
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+      if (users[username] && users[username] === password) {
+        localStorage.setItem('currentUser', username);
+        showDashboard(username);
+      } else {
+        message.textContent = 'Invalid username or password.';
+        message.style.color = 'red';
+      }
+    }
+
+    // Show dashboard
+    function showDashboard(username) {
+      document.getElementById('user-display').textContent = username;
+      showSection('dashboard');
+    }
+
+    // Log Out
+    function logOut() {
+      localStorage.removeItem('currentUser');
+      showSection('signin-section');
+    }
+
+    // Auto-login if a session exists
+    window.onload = () => {
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        showDashboard(currentUser);
+      }
+    };
+  </script>
+</body>
+</html>

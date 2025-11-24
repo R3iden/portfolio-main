@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Accessible Calculator</title>
+  <style>
+    :root {
+      --bg: #524d4d;
+      --card: #fff;
+      --primary: #3498db;
+      --primary-hover: #2980b9;
+      --ok: #2ecc71;
+      --danger: #e74c3c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .calculator {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+      width: 260px;
+    }
+    .display {
+      width: 100%;
+      height: 50px;
+      font-size: 1.5rem;
+      text-align: right;
+      padding: 10px;
+      border: 1px solid #584747;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button.btn {
+      padding: 15px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--primary);
+      color: rgb(250, 249, 249);
+      transition: background 0.15s;
+    }
+    button.btn:hover { background: var(--primary-hover); }
+    button.equal {
+      background: var(--ok);
+    }
+    button.equal:hover { background: #27ae60; }
+    button.clear {
+      background: var(--danger);
+    }
+    button.clear:hover { background: #c0392b; }
+    button.zero {
+      grid-column: span 4;
+    }
+    .sr-only {
+      position: absolute !important;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator" role="application" aria-label="Simple calculator">
+    <label for="display" class="sr-only">Calculator display</label>
+    <input
+      id="display"
+      class="display"
+      type="text"
+      placeholder="0"
+      title="Calculator display"
+      readonly
+      aria-describedby="aria-status"
+    />
+    <div id="aria-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="buttons" role="group" aria-label="Calculator buttons">
+      <button type="button" class="btn clear" onclick="clearDisplay()">C</button>
+      <button type="button" class="btn" onclick="appendValue('/')">÷</button>
+      <button type="button" class="btn" onclick="appendValue('*')">×</button>
+      <button type="button" class="btn" onclick="appendValue('-')">-</button>
+
+      <button type="button" class="btn" onclick="appendValue('7')">7</button>
+      <button type="button" class="btn" onclick="appendValue('8')">8</button>
+      <button type="button" class="btn" onclick="appendValue('9')">9</button>
+      <button type="button" class="btn" onclick="appendValue('+')">+</button>
+
+      <button type="button" class="btn" onclick="appendValue('4')">4</button>
+      <button type="button" class="btn" onclick="appendValue('5')">5</button>
+      <button type="button" class="btn" onclick="appendValue('6')">6</button>
+      <button type="button" class="btn" onclick="appendValue('.')">.</button>
+
+      <button type="button" class="btn" onclick="appendValue('1')">1</button>
+      <button type="button" class="btn" onclick="appendValue('2')">2</button>
+      <button type="button" class="btn" onclick="appendValue('3')">3</button>
+      <button type="button" class="btn equal" onclick="calculate()">=</button>
+
+      <button type="button" class="btn zero" onclick="appendValue('0')">0</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    const ariaStatus = document.getElementById('aria-status');
+
+    function updateAria() {
+      ariaStatus.textContent = display.value || '0';
+    }
+
+    function appendValue(value) {
+      display.value += value;
+      updateAria();
+    }
+
+    function clearDisplay() {
+      display.value = '';
+      updateAria();
+    }
+
+    function calculate() {
+      try {
+        const result = Function('"use strict";return (' + display.value + ')')();
+        display.value = String(result);
+      } catch (err) {
+        display.value = 'Error';
+      }
+      updateAria();
+    }
+
+    updateAria();
+  </script>
+</body>
+</html>
